@@ -77,26 +77,64 @@ inforUsuario = {
     }
 }
 
-
-
-si = ['Si', 'SI', 'SÍ', 'Sí', 'si', 'sí', 'sÍ', 'sI']
-no = ['No', 'NO', 'NÓ', 'Nó', 'no', 'nó', 'nÓ', 'nO']
 nums = ["num0", "num1", "num2", "num3", "num4", "num5", "num6", "num7", "num8"]
 
+var radios = $('[type="radio"]');
+
+radios.change(function () {
+    radios.not(this).prop('checked', false);
+});
+
+
+const sistemasDeReglas = async () => {
+    getData()
+    validaciones()
+
+    if (!inforUsuario.pregunta1.error &&
+        !inforUsuario.pregunta2.error &&
+        !inforUsuario.pregunta3.error &&
+        !inforUsuario.pregunta4.error &&
+        !inforUsuario.pregunta5.error) {
+
+
+        const informacionUsuarioFinal = {
+            fullname: inforUsuario.usuario.nombre,
+            respuesta1: inforUsuario.pregunta1.respuesta,
+            respuesta2: inforUsuario.pregunta2.respuesta,
+            respuesta3: inforUsuario.pregunta3.respuesta,
+            respuesta4: inforUsuario.pregunta4.respuesta,
+            respuesta5: inforUsuario.pregunta5.respuesta
+        }
+
+        url = 'http://127.0.0.1:5000/api/v1/sistemasDeReglas'
+
+        var config = {
+            headers: { 'Access-Control-Allow-Origin': '*' }
+        }
+
+        await axios({ method: 'POST', url: url, data: informacionUsuarioFinal, headers: config })
+            .then(response => {
+                alert = document.getElementById("alert")
+                alert.innerHTML = response.data
+                alert.style.display = "block";
+            })
+            .catch()
+    }
+}
 
 function getData() {
-    inforUsuario.usuario.nombre = document.getElementById("name"),
-        inforUsuario.pregunta1.respuesta = document.getElementById("pregunta1")
-    inforUsuario.pregunta2.respuesta = document.getElementById("pregunta2")
+    inforUsuario.usuario.nombre = document.getElementById("name").value,
+        inforUsuario.pregunta1.respuesta = document.getElementById("pregunta1").value == 'Seleccione su respuesta' ? null : document.getElementById("pregunta1").value
+    inforUsuario.pregunta2.respuesta = document.getElementById("pregunta2").value == 'Seleccione su respuesta' ? null : document.getElementById("pregunta2").value
 
     nums.forEach(num => {
         if (document.getElementById(num).checked) {
-            inforUsuario.pregunta3.respuesta = document.getElementById(num)
+            inforUsuario.pregunta3.respuesta = document.getElementById(num).value
         }
     });
+    inforUsuario.pregunta4.respuesta = document.getElementById("pregunta4").value == 'Seleccione su respuesta' ? null : document.getElementById("pregunta4").value
+    inforUsuario.pregunta5.respuesta = document.getElementById("pregunta5").value == 'Seleccione su respuesta' ? null : document.getElementById("pregunta5").value
 
-    inforUsuario.pregunta4.respuesta = document.getElementById("pregunta4")
-    inforUsuario.pregunta5.respuesta = document.getElementById("pregunta5")
 
     inforUsuario.usuario.errorMessage = document.getElementById("errorName")
     inforUsuario.pregunta1.errorMessage = document.getElementById("errorPregunta1")
@@ -106,44 +144,18 @@ function getData() {
     inforUsuario.pregunta5.errorMessage = document.getElementById("errorPregunta5")
 }
 
-function sistemasDeReglas() {
-    getData()
-    validaciones()
-
-    if (!inforUsuario.pregunta1.error && !inforUsuario.pregunta2.error && !inforUsuario.pregunta3.error && !inforUsuario.pregunta4.error && !inforUsuario.pregunta5.error) {
-        alert = document.getElementById("alert")
-        alert.style.display = "block";
-
-        console.log(
-            'INFORMACION USUARIO ', inforUsuario
-        )
-
-        limpiarDatos()
-
-    }
-}
-
-function limpiarDatos() {
-    inforUsuario.usuario.nombre.value = ''
-    inforUsuario.pregunta1.respuesta.value = ''
-    inforUsuario.pregunta2.respuesta.value = ''
-    inforUsuario.pregunta4.respuesta.value = ''
-    inforUsuario.pregunta5.respuesta.value = ''
-}
-
-
 
 function validaciones() {
     validarNombre()
-    validarPreguntas(inforUsuario.pregunta1, inforUsuario.pregunta1.errorMessage)
-    validarPreguntas(inforUsuario.pregunta2, inforUsuario.pregunta2.errorMessage)
-    validarPregunta3()
-    validarPreguntas(inforUsuario.pregunta4, inforUsuario.pregunta4.errorMessage)
-    validarPreguntas(inforUsuario.pregunta5, inforUsuario.pregunta5.errorMessage)
+    validarPreguntaIfSelected(inforUsuario.pregunta1)
+    validarPreguntaIfSelected(inforUsuario.pregunta2)
+    validarPreguntaIfSelected(inforUsuario.pregunta3)
+    validarPreguntaIfSelected(inforUsuario.pregunta4)
+    validarPreguntaIfSelected(inforUsuario.pregunta5)
 }
 
 function validarNombre() {
-    if (inforUsuario.usuario.nombre.value === '' || !isNaN(inforUsuario.usuario.nombre.value)) {
+    if (inforUsuario.usuario.nombre === '' || !isNaN(inforUsuario.usuario.nombre)) {
         inforUsuario.usuario.errorMessage.innerHTML = `Usuario Invalido!`
         inforUsuario.usuario.error = true
     } else {
@@ -151,30 +163,13 @@ function validarNombre() {
     }
 }
 
-function validarPregunta3() {
-    if (inforUsuario.pregunta3.respuesta == null) {
-        inforUsuario.pregunta3.errorMessage.innerHTML = `Campo requerido!`
-        inforUsuario.pregunta3.error = true
+function validarPreguntaIfSelected(pregunta) {
+    if (pregunta.respuesta == null) {
+        pregunta.errorMessage.innerHTML = `Campo requerido!`
+        pregunta.error = true
         return
     } else {
-        inforUsuario.pregunta3.error = false
+        pregunta.errorMessage.innerHTML = ``
+        pregunta.error = false
     }
 }
-
-function validarPreguntas(pregunta, idAvisoError) {
-    siFind = si.filter(function (element) {
-        return element == pregunta.respuesta.value;
-    });
-
-    noFind = no.filter(function (element) {
-        return element == pregunta.respuesta.value;
-    });
-
-    while (siFind.length == 0 && noFind.length == 0) {
-        idAvisoError.innerHTML = `Campo requerido!`
-        pregunta.error = true
-        return false
-    }
-    pregunta.error = false
-}
-
