@@ -17,6 +17,27 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet"
         type="text/css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css" />
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.datatables.net/buttons/2.3.3/css/buttons.bootstrap5.min.css" />
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.3/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.3/js/buttons.bootstrap5.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.3/js/buttons.html5.min.js"></script>
+
+    <!-- links para exportar a excel -->
+    <script src="https://unpkg.com/xlsx@latest/dist/xlsx.full.min.js"></script>
+    <script src="https://unpkg.com/file-saverjs@latest/FileSaver.min.js"></script>
+    <script src="https://unpkg.com/tableexport@latest/dist/js/tableexport.min.js"></script>
+
+
+
+
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/styles.css" rel="stylesheet" />
 </head>
@@ -325,10 +346,164 @@
                 <div class="divider-custom-line"></div>
             </div>
             <!-- About Section Content-->
-            <div class="row">
-                <!-- <div class="col-lg-4 ms-auto"><p class="lead">Super Medic es un servicio informativo de salud para pacientes, familiares y amigos. Es producido por la Biblioteca Nacional de Medicina de Estados Unidos (NLM, por sus siglas en inglés), la biblioteca médica más grande del mundo y parte de los Institutos Nacionales de la Salud de EE. UU. (NIH, por sus siglas en inglés).</p></div>
-                    <div class="col-lg-4 me-auto"><p class="lead">Infórmese sobre temas de bienestar y sobre síntomas, causas, tratamiento y prevención de más de 1,000 enfermedades, afecciones y trastornos de salud.!</p></div> -->
-            </div>
+            <form id="sistemaReglasForm">
+                <div class="alert alert-success" style="display:none" role="alert" id="alert">
+                </div>
+                <!-- Nombre input-->
+                <div class="form-floating mb-3 bg-primary">
+                    <label for="name" class="text-white">Que hora desea predecir el lapso de tiempo va de 30min desde las 7:00 AM- 8:00PM </label>
+                    <br>
+                    <br>
+                    <br>
+                </div>
+
+                <select class="form-select" aria-label="multiple select example" id="hora">
+                    <option selected>Seleccione su respuesta</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                    <option value="21">21</option>
+                    <option value="22">22</option>
+                    <option value="23">23</option>
+                    <option value="24">24</option>
+                    <option value="25">25</option>
+                    <option value="26">26</option>
+                    <option value="27">27</option>
+                </select>
+        
+
+                <div class="form-floating mb-3 bg-primary">
+                    <input class="form-control bg-primary" id="bus" type="number" placeholder="Enter your name..." />
+                    <label for="name" class="text-white">Cuantos buses inmovilizados hay en la via?</label>
+                    <div style="color: brown" id="errorName"></div>
+                </div>
+
+                <div class="form-floating mb-3 bg-primary">
+                    <input class="form-control bg-primary" id="camiones" type="number" placeholder="Enter your name..." />
+                    <label for="name" class="text-white">Cuantos camiones averiados ahi en la via</label>
+                    <div style="color: brown" id="errorName"></div>
+                </div>
+
+                <div class="form-floating mb-3 bg-primary">
+                    <label for="name" class="text-white">Hay exceso de vehiculo en la via?</label>
+                    <div style="color: brown" id="errorName"></div>
+                    <br>
+                    <br>
+                    <br>
+                </div>
+                <select class="form-select" aria-label="multiple select example" id="trafico">
+                    <option selected>Seleccione su respuesta</option>
+                    <option value="1">SI</option>
+                    <option value="0">NO</option>
+                </select>
+
+                <div class="form-floating mb-3 bg-primary">
+                    <input class="form-control bg-primary" id="atropellos" type="number" placeholder="Enter your name..." />
+                    <label for="name" class="text-white">Cuantos atropellos hay  en la via</label>
+                    <div style="color: brown" id="errorName"></div>
+                </div>
+
+                <div class="form-floating mb-3 bg-primary">
+                    <input class="form-control bg-primary" id="incidentes" type="number" placeholder="Enter your name..." />
+                    <label for="name" class="text-white">Hay incidentes con carga en la via? </label>
+                    <div style="color: brown" id="errorName"></div>
+                </div>
+
+                <div class="form-floating mb-3 bg-primary">
+                    <label for="name" class="text-white">Hay incidentes con carga peligrosa ahi en la via?</label>
+                    <div style="color: brown" id="errorName"></div>
+                    <br>
+                    <br>
+                    <br>
+                </div>
+
+                <select class="form-select" aria-label="multiple select example" id="cargaPeligrosa">
+                    <option selected>Seleccione su respuesta</option>
+                    <option value="1">SI</option>
+                    <option value="0">NO</option>
+                </select>
+
+
+
+                <div class="form-floating mb-3 bg-primary">
+                    <input class="form-control bg-primary" id="energia" type="number" placeholder="Enter your name..." />
+                    <label for="name" class="text-white">Cuantas fallas de energia hay en la via?</label>
+                    <div style="color: brown" id="errorName"></div>
+                </div>
+
+                <div class="form-floating mb-3 bg-primary">
+                    <input class="form-control bg-primary" id="puntos" type="number" placeholder="Enter your name..." />
+                    <label for="name" class="text-white">Cuantos puntos de inundacion hay en la via?</label>
+                    <div style="color: brown" id="errorName"></div>
+                </div>
+
+                <div class="form-floating mb-3 bg-primary">
+                    <label for="name" class="text-white">Hay manifestaciones en la via?</label>
+                    <div style="color: brown" id="errorName"></div>
+                    <br>
+                    <br>
+                    <br>
+                </div>
+                <select class="form-select" aria-label="multiple select example" id="manifestaciones">
+                    <option selected>Seleccione su respuesta</option>
+                    <option value="1">SI</option>
+                    <option value="0">NO</option>
+                </select>
+
+                <div class="form-floating mb-3 bg-primary">
+                    <label for="name" class="text-white">Hay arboles en la via?</label>
+                    <div style="color: brown" id="errorName"></div>
+                    <br>
+                    <br>
+                    <br>
+                </div>
+                <select class="form-select" aria-label="multiple select example" id="arboles">
+                    <option selected>Seleccione su respuesta</option>
+                    <option value="1">SI</option>
+                    <option value="0">NO</option>
+                </select>
+                <div class="form-floating mb-3 bg-primary">
+                    <input class="form-control bg-primary" id="semaforos" type="number" placeholder="Enter your name..." />
+                    <label for="name" class="text-white">Cuantos semaforos estan apagados en la via?</label>
+                    <div style="color: brown" id="errorName"></div>
+                </div>
+                <div class="form-floating mb-3 bg-primary">
+                    <label for="name" class="text-white">Hay semaforos intermitentes en la via?</label>
+                    <div style="color: brown" id="errorName"></div>
+                </div>
+                <br>
+                <br>
+                <br>
+                <br>
+                <select class="form-select" aria-label="multiple select example" id="semaforosIntermitente">
+                    <option selected>Seleccione su respuesta</option>
+                    <option value="1">SI</option>
+                    <option value="0">NO</option>
+                </select>
+            </form>
+            <br>
+            <br>
+            <br>
+            <button class="btn btn-danger btn-xl" onclick="regresionLineal()"
+            type="submit">GUARDAR Y PREDECIR</button>
         </div>
     </section>
     <section class="page-section" id="reportes">
@@ -343,20 +518,59 @@
             </div>
             <!-- Contact Section Form-->
             <div class="row justify-content-center">
-                <div class="col-lg-8 col-xl-7">
-                    <table class="table table-striped" id="reportsTable">
-                        <thead>
-                          <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">First</th>
-                            <th scope="col">Last</th>
-                            <th scope="col">Handle</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                      </table>
+                <!-- <div class="col-lg-8 col-xl-7"> -->
+
+                <div class="form-floating mb-3">
+                    <br>
+                    <div class="row">
+                        <div class="col-md-11">
+                            <select class="form-select" aria-label="multiple select example" id="diagnosticos">
+                                <option selected>Consultar Diagnosticos</option>
+                                <option value="1">Usted no presenta sintomas de una enfermedad del sistema digestivo</option>
+                                <option value="2">Usted no presenta sintomas de una enfermedad del sistema digestivo. Se recomienda valoracion por nutricion</option>
+                                <option value="3">Los sintomas no son concluyentes, se necesita mas informacion para realizar un diagnostico certero. </option>
+                                <option value="4">Los sintomas no son concluyentes, se necesita mas informacion para realizar un diagnostico certero. Se recomienda hidratarse bien</option>
+                                <option value="5">Usted tiene ENFERMEDAD DIARREICA AGUDA, favor hidratarse bien</option>
+
+                                <option value="6">Los sintomas no son concluyentes, se necesita mas informacion para realizar un diagnostico certero. Se recomienda valoracion medica</option>
+                                <option value="7">Los sintomas presentados son asociados a PANCREATITIS, se recomienda valoracion medica</option>
+                                <option value="8">Los sintomas presentados son asociados a GASTRITIS, se recomienda valoracion medica</option>
+                                <option value="9">Los sintomas presentados son asociados a ENFERMEDAD DE CROHN, se recomienda valoracion medica</option>
+
+                                <option value="10">Los sintomas presentados son asociados a SINDROME DE INTESTINO IRRITABLE, se recomienda valoracion medica</option>
+                                <option value="11"> Los sintomas presentados son asociados a ENFERMEDAD CELIACA, se recomienda valoracion medica</option>
+                                <option value="12">Los sintomas presentados son asociados a COLECISTITIS (Calculos Biliares), se recomienda valoracion medica</option>
+                                <option value="13">Los sintomas presentados son asociados a GASTROENTERITIS, se recomienda valoracion medica</option>
+
+                                <option value="14">Los sintomas presentados son asociados a APENDICITIS, se recomienda valoracion medica</option>
+                                <option value="15">Los sintomas presentados son asociados a APENDICITIS, se recomienda valoracion medica urgente</option>
+                            </select>
+                            <div style="color: brown" id="errorPregunta1"></div>
+                        </div>
+                        <div class="col-md-1">
+                            <button class="btn btn-primary btnborrar">Excel</button>
+                        </div>
+                    </div>
+                    <br>
+                    <button class="btn btn-primary btn-xl" onclick="obtenerReportes()"
+                            type="submit">ENVIAR</button>
+                            <br>
+                            <br>
+                   
                 </div>
+
+                <table class="table" id="reportsTable">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Usuario</th>
+                            <th scope="col">Diagnostico</th>
+                            <th scope="col">Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablita">
+                    </tbody>
+                </table>
+                <!-- </div> -->
             </div>
         </div>
     </section>

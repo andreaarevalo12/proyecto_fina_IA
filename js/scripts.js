@@ -81,9 +81,57 @@ nums = ["num0", "num1", "num2", "num3", "num4", "num5", "num6", "num7", "num8"]
 
 var radios = $('[type="radio"]');
 
+var config = {
+    headers: { 'Access-Control-Allow-Origin': '*' }
+}
+
 radios.change(function () {
     radios.not(this).prop('checked', false);
 });
+
+
+const obtenerReportes = async () => {
+
+    reportsTableRef = document.getElementById("reportsTable")
+    diagnostico = document.getElementById("diagnosticos").value
+    url = 'http://127.0.0.1:5000/api/v1/getAllReports/' + diagnostico
+    
+    await axios({ method: 'GET', url: url, config })
+        .then(response => {
+            response.data.forEach((reporte, index) => { 
+                console.log('REPORTE ', reporte)
+                var fila = "<tr>" + reporte.fullname + "</td><td>" + reporte.diagnostico + "</td><td>" + reporte.fecha + "</td></tr>";
+                var btn = document.createElement("TR");
+                btn.innerHTML = fila;
+                document.getElementById("tablita").appendChild(btn);
+            });
+    })
+    .catch()
+}
+
+$(document).on('click', '.btnborrar', function() {
+
+    let tableExport = new TableExport(document.getElementById("tablita"), {
+        exportButtons: false, // No queremos botones
+        filename: "Reporte de prueba", //Nombre del archivo de Excel
+    });
+    let datos = tableExport.getExportData();
+    let preferenciasDocumento = datos.tablita.xlsx;
+    tableExport.export2file(preferenciasDocumento.data, preferenciasDocumento.mimeType, preferenciasDocumento.filename, preferenciasDocumento.fileExtension, preferenciasDocumento.merges, preferenciasDocumento.RTL, preferenciasDocumento.sheetname);
+});
+
+
+$(document).on('click', '.btnPdf', function() {
+
+    let tableExport = new TableExport(document.getElementById("tablita"), {
+        exportButtons: false, // No queremos botones
+        filename: "Reporte de prueba", //Nombre del archivo de Excel
+    });
+    let datos = tableExport.getExportData();
+    let preferenciasDocumento = datos.tablita.xlsx;
+    tableExport.export2file(preferenciasDocumento.data, preferenciasDocumento.mimeType, preferenciasDocumento.filename, preferenciasDocumento.fileExtension, preferenciasDocumento.merges, preferenciasDocumento.RTL, preferenciasDocumento.sheetname);
+});
+
 
 
 const sistemasDeReglas = async () => {
@@ -107,10 +155,6 @@ const sistemasDeReglas = async () => {
         }
 
         url = 'http://127.0.0.1:5000/api/v1/sistemasDeReglas'
-
-        var config = {
-            headers: { 'Access-Control-Allow-Origin': '*' }
-        }
 
         await axios({ method: 'POST', url: url, data: informacionUsuarioFinal, headers: config })
             .then(response => {
@@ -172,4 +216,63 @@ function validarPreguntaIfSelected(pregunta) {
         pregunta.errorMessage.innerHTML = ``
         pregunta.error = false
     }
+}
+
+const regresionLineal = async() => {
+
+    hora = document.getElementById("hora").value
+    bus = document.getElementById("bus").value
+    camiones = document.getElementById("camiones").value
+    trafico = document.getElementById("trafico").value
+
+    atropellos = document.getElementById("atropellos").value
+    incidentes = document.getElementById("incidentes").value
+    cargaPeligrosa = document.getElementById("cargaPeligrosa").value
+
+    energia = document.getElementById("energia").value
+    puntos = document.getElementById("puntos").value
+    manifestaciones = document.getElementById("manifestaciones").value
+
+    arboles = document.getElementById("arboles").value
+    semaforos = document.getElementById("semaforos").value
+    semaforosIntermitente = document.getElementById("semaforosIntermitente").value
+
+    data = {
+        hora: hora,
+        bus_inmovilizado: bus,
+        camión_averiado:camiones,
+        exceso_de_vehículo: trafico,
+        atropello: atropellos,
+        ocurrencia_con_carga: incidentes,
+        Incidente_con_carga_peligrosa: cargaPeligrosa,
+        falta_de_energía_eléctrica:energia,
+        punto_de_inundaciones: puntos,
+        manifestaciones: manifestaciones,
+        arbol_en_la_vía: arboles,
+        semáforo_apagado: semaforos,
+        semáforo_intermitente : semaforosIntermitente
+    }
+    
+    url = 'http://127.0.0.1:5000/api/v1/regresionmultiple'
+
+        await axios({ method: 'POST', url: url, data: data, headers: config })
+            .then(response => {
+                alert = document.getElementById("alert")
+                alert.innerHTML = response.data
+                alert.style.display = "block";
+            })
+            .catch()
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

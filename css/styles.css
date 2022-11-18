@@ -327,8 +327,10 @@ td,
 th {
   border-color: inherit;
   border-style: solid;
-  border-width: 0;
+  border-color: #15967d;
+  border-width: 8;
 }
+
 
 label {
   display: inline-block;
@@ -1970,6 +1972,7 @@ progress {
   margin-bottom: 1rem;
   color: #212529;
   vertical-align: top;
+  text-align: center;
   border-color: #dee2e6;
 }
 .table > :not(caption) > * > * {
