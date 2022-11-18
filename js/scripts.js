@@ -229,6 +229,7 @@ const regresionLineal = async() => {
     incidentes = document.getElementById("incidentes").value
     cargaPeligrosa = document.getElementById("cargaPeligrosa").value
 
+
     energia = document.getElementById("energia").value
     puntos = document.getElementById("puntos").value
     manifestaciones = document.getElementById("manifestaciones").value
@@ -238,26 +239,26 @@ const regresionLineal = async() => {
     semaforosIntermitente = document.getElementById("semaforosIntermitente").value
 
     data = {
-        hora: hora,
-        bus_inmovilizado: bus,
-        camión_averiado:camiones,
-        exceso_de_vehículo: trafico,
-        atropello: atropellos,
-        ocurrencia_con_carga: incidentes,
-        Incidente_con_carga_peligrosa: cargaPeligrosa,
-        falta_de_energía_eléctrica:energia,
-        punto_de_inundaciones: puntos,
-        manifestaciones: manifestaciones,
-        arbol_en_la_vía: arboles,
-        semáforo_apagado: semaforos,
-        semáforo_intermitente : semaforosIntermitente
+        hora: parseInt(hora),
+        bus_inmovilizado: parseInt(bus),
+        camión_averiado:parseInt(camiones),
+        exceso_de_vehículo: parseInt(trafico),
+        atropello: parseInt(atropellos),
+        ocurrencia_con_carga: parseInt(incidentes),
+        incidente_con_carga_peligrosa: parseInt(cargaPeligrosa),
+        falta_de_energía_eléctrica:parseInt(energia),
+        punto_de_inundaciones: parseInt(puntos),
+        manifestaciones: parseInt(manifestaciones),
+        arbol_en_la_vía: parseInt(arboles),
+        semáforo_apagado: parseInt(semaforos),
+        semáforo_intermitente : parseInt(semaforosIntermitente)
     }
     
     url = 'http://127.0.0.1:5000/api/v1/regresionmultiple'
 
         await axios({ method: 'POST', url: url, data: data, headers: config })
             .then(response => {
-                alert = document.getElementById("alert")
+                alert = document.getElementById("alertAlgoritmo")
                 alert.innerHTML = response.data
                 alert.style.display = "block";
             })

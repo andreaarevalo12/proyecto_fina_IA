@@ -116,13 +116,13 @@ def regresionmultiple():
 
 
 
-   if conexion.is_connected():
-      print ("Conexión Exitosa")
-      cursor=conexion.cursor()
-      cursor.execute("""INSERT INTO trafico (Hora,bus_inmobil,camion_ave,trancon,atropello,carga,carga_peligrosa,energia,inundacion,manifestacion,arbol,semaforo_off,semaforo_int,lentitud_porc) VALUES (%s, %s, %s, %s, %s, %s, %s, %s,%s,%s,%s,%s,%s,%s)""",
-       (Hora,Bus_inmovilizado,Camión_averiado,Exceso_de_vehículo,Atropello,Ocurrencia_con_carga,Incidente_con_carga_peligrosa,Falta_de_energía_eléctrica,Punto_de_inundaciones,Manifestaciones,Árbol_en_la_vía,Semáforo_apagado,Semáforo_intermitente,predic))
-      conexion.commit()
-      cursor.close()
+#    if conexion.is_connected():
+#       print ("Conexión Exitosa")
+#       cursor=conexion.cursor()
+#       cursor.execute("""INSERT INTO trafico (Hora,bus_inmobil,camion_ave,trancon,atropello,carga,carga_peligrosa,energia,inundacion,manifestacion,arbol,semaforo_off,semaforo_int,lentitud_porc) VALUES (%s, %s, %s, %s, %s, %s, %s, %s,%s,%s,%s,%s,%s,%s)""",
+#        (Hora,Bus_inmovilizado,Camión_averiado,Exceso_de_vehículo,Atropello,Ocurrencia_con_carga,Incidente_con_carga_peligrosa,Falta_de_energía_eléctrica,Punto_de_inundaciones,Manifestaciones,Árbol_en_la_vía,Semáforo_apagado,Semáforo_intermitente,predic))
+#       conexion.commit()
+#       cursor.close()
    
    return jsonify(resultado)
    ## hasta aqui lo hice (Duvan)
